@@ -60,10 +60,10 @@ export const Hero: React.FC = () => (
       />
       <div className="w-full md:w-1/2 flex flex-col gap-6">
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <div className="h-1 w-12 bg-gold-custom"></div>
             <span className="text-teal-custom font-bold text-xs uppercase tracking-widest">Pendaftaran Anggota Baru</span>
-          </div>
+          </div> */}
           <h1 className="text-primary text-4xl md:text-5xl font-black leading-tight tracking-tight">
             Membangun Masa Depan Sejahtera Bersama Amanah Bangkit Bersama
           </h1>
@@ -72,9 +72,11 @@ export const Hero: React.FC = () => (
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
-          <button className="bg-teal-custom text-white font-bold px-8 h-12 rounded-lg hover:bg-teal-custom/90 transition-all shadow-md">
-            Gabung Sekarang
-          </button>
+          <Link to="/daftar">
+            <button className="bg-teal-custom text-white font-bold px-8 h-12 rounded-lg hover:bg-teal-custom/90 transition-all shadow-md">
+              Gabung Sekarang
+            </button>
+          </Link>
           <button className="border-2 border-primary text-primary font-bold px-8 h-12 rounded-lg hover:bg-primary/5 transition-all">
             Pelajari Layanan
           </button>

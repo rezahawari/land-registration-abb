@@ -8,7 +8,7 @@ import {
   CTASection, 
   Footer,
   ProgressBar 
-} from './components/LandingPage';
+} from '../components/LandingPage';
 
 const App: React.FC = () => {
   const [step] = useState(1);
@@ -19,9 +19,9 @@ const App: React.FC = () => {
       <Header />
       <main className="flex-grow">
         <div className="bg-white px-4 md:px-40 py-5">
-           <div className="max-w-[1200px] mx-auto">
+           {/* <div className="max-w-[1200px] mx-auto">
               <ProgressBar currentStep={step} totalSteps={totalSteps} />
-           </div>
+           </div> */}
         </div>
         
         <Hero />

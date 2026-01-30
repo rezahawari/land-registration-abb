@@ -1,11 +1,12 @@
 
 export interface FormData {
   nik: string;
-  fullName: string;
+  name: string;
   birthPlace: string;
   birthDate: string;
   gender: string;
   job: string;
+  password: string;
   ktpPhoto: File | null;
   kkPhoto: File | null;
 }
