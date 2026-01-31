@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Jangan rewrite jika request adalah file yang ada
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # Jangan rewrite jika request adalah direktori yang ada
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Rewrite semua route ke index.html
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
