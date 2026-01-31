@@ -18,3 +18,10 @@ export enum Step {
   OCCUPATION = 3,
   REVIEW = 4
 }
+
+export enum StepPengajuan {
+  DASAR = 1,
+  LAHAN = 2,
+  DOKUMEN = 3,
+  REVIEW = 4,
+}

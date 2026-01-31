@@ -5,6 +5,7 @@ import App from './pages/App'
 import Registration from './pages/Registration'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Pengajuan from './pages/Pengajuan'
 import { PublicRoute, ProtectedRoute } from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 // import './index.css'
@@ -36,6 +37,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pengajuan"
+            element={
+              <ProtectedRoute>
+                <Pengajuan />
               </ProtectedRoute>
             }
           />

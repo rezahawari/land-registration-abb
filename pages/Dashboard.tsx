@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Header, 
   Hero, 
@@ -94,14 +95,29 @@ const Dashboard: React.FC = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-gray-800">Layanan Utama</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {services.map((item, idx) => (
-              <div key={idx} className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all flex flex-col items-center justify-center text-center group cursor-pointer">
-                <div className={`${item.bg} ${item.color} w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <span className="material-symbols-outlined text-[32px]">{item.icon}</span>
+            {services.map((item, idx) => {
+              const card = (
+                <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all flex flex-col items-center justify-center text-center group cursor-pointer">
+                  <div className={`${item.bg} ${item.color} w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <span className="material-symbols-outlined text-[32px]">{item.icon}</span>
+                  </div>
+                  <p className="font-bold text-gray-800">{item.title}</p>
                 </div>
-                <p className="font-bold text-gray-800">{item.title}</p>
-              </div>
-            ))}
+              );
+
+              // Make 'Ajukan Baru' navigate to /pengajuan
+              if (item.title === 'Ajukan Baru') {
+                return (
+                  <Link to="/pengajuan" key={idx} className="block">
+                    {card}
+                  </Link>
+                );
+              }
+
+              return (
+                <div key={idx}>{card}</div>
+              );
+            })}
           </div>
         </div>
       </div>
