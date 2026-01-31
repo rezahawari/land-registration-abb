@@ -52,23 +52,10 @@ const App: React.FC = () => {
     try {
       const response = await submitRegistration(formData);
       setSuccess(true);
-      
-      // Reset form setelah sukses
+      // Arahkan ke halaman login setelah registrasi berhasil
       setTimeout(() => {
-        setFormData({
-          nik: '',
-          name: '',
-          email: '',
-          birthPlace: '',
-          birthDate: '',
-          gender: '',
-          job: '',
-          password: '',
-          ktpPhoto: null,
-          kkPhoto: null,
-        });
-        setSuccess(false);
-      }, 3000);
+        window.location.href = '/login';
+      }, 1200);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan saat mengirim data');
     } finally {

@@ -9,7 +9,7 @@ import {
   ProgressBar 
 } from '../components/LandingPage';
 import { Link } from 'react-router-dom';
-import { saveToken, saveUser } from '../utils/auth';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LoginProps {
   onBackToRegister: () => void;
@@ -21,6 +21,7 @@ const Login: React.FC<LoginProps> = ({ onBackToRegister }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,21 +61,19 @@ const Login: React.FC<LoginProps> = ({ onBackToRegister }) => {
       // Jika login berhasil
       setSuccess('Login berhasil! Mengalihkan...');
       
-      // Simpan token menggunakan fungsi auth utility
-      saveToken({
-        token: data.data.token,
-        refreshToken: data.data.refreshToken,
-        expiresIn: data.data.expiresIn,
-      });
-      
-      // Simpan user data
-      if (data.data.user) {
-        saveUser(data.data.user);
-      }
+      // Simpan token dan user melalui AuthContext
+      login(
+        {
+          token: data.data.token,
+          refreshToken: data.data.refreshToken,
+          expiresIn: data.data.expiresIn,
+        },
+        data.data.user
+      );
 
-      // Redirect ke halaman awal setelah 1 detik
+      // Redirect ke halaman dashboard setelah 1 detik
       setTimeout(() => {
-        window.location.href = '/';
+        window.location.href = '/dashboard';
       }, 1000);
     } catch (err) {
       setError('Terjadi kesalahan. Silakan coba lagi.');
