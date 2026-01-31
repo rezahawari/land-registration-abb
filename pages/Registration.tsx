@@ -22,6 +22,7 @@ const App: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     nik: '',
     name: '',
+    email: '',
     birthPlace: '',
     birthDate: '',
     gender: '',
@@ -57,6 +58,7 @@ const App: React.FC = () => {
         setFormData({
           nik: '',
           name: '',
+          email: '',
           birthPlace: '',
           birthDate: '',
           gender: '',
@@ -153,7 +155,6 @@ const App: React.FC = () => {
                   />
                 </label>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <label className="flex flex-col gap-2">
                   <span className="text-[#111418] dark:text-gray-200 text-sm font-semibold">Tempat Lahir</span>
@@ -206,6 +207,17 @@ const App: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <label className="flex flex-col gap-2">
+                  <span className="text-[#111418] dark:text-gray-200 text-sm font-semibold">Email</span>
+                  <input 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="form-input w-full rounded-lg border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white h-12 px-4 focus:ring-[#137fec] focus:border-[#137fec]" 
+                    placeholder="alamat@email.com" 
+                    type="email"
+                  />
+                </label>
                 <label className="flex flex-col gap-2">
                   <span className="text-[#111418] dark:text-gray-200 text-sm font-semibold">Password</span>
                   <input 

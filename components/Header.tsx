@@ -1,7 +1,11 @@
 
 import React from 'react';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onLoginClick?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f4] dark:border-b-gray-800 bg-white dark:bg-[#101922] px-6 md:px-10 py-3 sticky top-0 z-50">
       <div className="flex items-center gap-4 text-[#137fec]">
@@ -27,7 +31,9 @@ const Header: React.FC = () => {
           <a className="text-[#111418] dark:text-gray-300 text-sm font-medium hover:text-[#137fec] transition-colors" href="#">Layanan</a>
           <a className="text-[#111418] dark:text-gray-300 text-sm font-medium hover:text-[#137fec] transition-colors" href="#">Bantuan</a>
         </nav>
-        <button className="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#137fec] text-white text-sm font-bold hover:bg-[#137fec]/90 transition-all">
+        <button 
+          onClick={onLoginClick}
+          className="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#137fec] text-white text-sm font-bold hover:bg-[#137fec]/90 transition-all">
           <span>Masuk</span>
         </button>
       </div>

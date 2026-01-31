@@ -2,6 +2,7 @@
 export interface FormData {
   nik: string;
   name: string;
+  email: string;
   birthPlace: string;
   birthDate: string;
   gender: string;

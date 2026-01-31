@@ -1,6 +1,6 @@
 import type { FormData } from '../types';
 
-const API_BASE_URL = process.env.VITE_API_BASE_URL || 'https://api-abb.exium.my.id/api';
+const API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:3002/api';
 
 export interface RegistrationResponse {
   success: boolean;
@@ -14,7 +14,7 @@ export interface RegistrationResponse {
 export const submitRegistration = async (formData: FormData): Promise<RegistrationResponse> => {
   try {
     // Validasi data wajib
-    if (!formData.nik || !formData.name || !formData.birthDate || !formData.gender || !formData.password) {
+    if (!formData.nik || !formData.name || !formData.email || !formData.birthDate || !formData.gender || !formData.password) {
       throw new Error('Data wajib tidak lengkap');
     }
 
@@ -24,6 +24,7 @@ export const submitRegistration = async (formData: FormData): Promise<Registrati
     // Tambahkan field text
     data.append('nik', formData.nik);
     data.append('name', formData.name);
+    data.append('email', formData.email);
     data.append('birthPlace', formData.birthPlace || '');
     data.append('birthDate', formData.birthDate);
     data.append('gender', formData.gender);

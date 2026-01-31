@@ -1,8 +1,35 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import { getUser, isLoggedIn, logout } from '../utils/auth';
 
-export const Header: React.FC = () => (
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  [key: string]: any;
+}
+
+export const Header: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      const currentUser = getUser();
+      setUser(currentUser);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setUser(null);
+    setShowDropdown(false);
+    window.location.href = '/';
+  };
+
+  return (
   <header className="flex items-center justify-between border-b border-[#f0f2f4] bg-white px-10 py-3 sticky top-0 z-50">
     <Link to="/">
       <div className="flex items-center gap-4 text-primary">
@@ -17,19 +44,65 @@ export const Header: React.FC = () => (
         <a className="text-[#111418] text-sm font-medium hover:text-teal-custom transition-colors" href="#">Tentang Kami</a>
         <a className="text-[#111418] text-sm font-medium hover:text-teal-custom transition-colors" href="#">FAQ</a>
       </nav>
-      <div className="flex gap-2">
-        <Link to="/daftar">
-          <button className="bg-primary text-white text-sm font-bold px-4 h-10 rounded-lg hover:bg-primary/90 transition-all shadow-sm">
-            Daftar Anggota
-          </button>
-        </Link>
-        <button className="bg-[#f0f2f4] text-[#111418] text-sm font-bold px-4 h-10 rounded-lg hover:bg-[#e2e4e6] transition-all">
-          Masuk
-        </button>
-      </div>
+
+      {user ? (
+        // User Profile Section (Logged In)
+        <div className="flex items-center gap-3 border-l pl-8 border-slate-200">
+          <div className="text-right hidden sm:block">
+            <p className="text-xs font-semibold text-[#111418]">{user.name}</p>
+            <p className="text-[10px] text-slate-500">{user.email}</p>
+          </div>
+          <div 
+            className="relative group cursor-pointer"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            <div 
+              className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200" 
+              style={{ 
+                backgroundImage: user.avatar 
+                  ? `url('${user.avatar}')` 
+                  : `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBcQa_vK3_UE3pmUtIhPwURUYKffgbhhlYp-bmuIZP1HNTKjtpMifEJuc2wu1My08QoZMXOJygTnCnhH8jiRHt4FUrgwrZulcIhGK1D--sPX2ZqsHODC3vZRjB99lhti_R8JODqFrPgJ0FSNM27KiUWMRKGKdNVH4uBBICSgaefYS0Y-Xtibaz---HH05m4XahzdZ9B4ZCfKkYmqnZQ2sKOWnmdVNNzww9zeQv1p68x_VAovcCrUxhLcKxttmxOCFOnKzbRlROL0pE_')`
+              }}
+            ></div>
+            
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg z-50">
+                <Link to="/profile" className="block px-4 py-2 text-sm text-[#111418] hover:bg-slate-50 border-b">
+                  Profil
+                </Link>
+                <Link to="/settings" className="block px-4 py-2 text-sm text-[#111418] hover:bg-slate-50 border-b">
+                  Pengaturan
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        // Login & Register Buttons (Not Logged In)
+        <div className="flex gap-2">
+          <Link to="/daftar">
+            <button className="bg-primary text-white text-sm font-bold px-4 h-10 rounded-lg hover:bg-primary/90 transition-all shadow-sm">
+              Daftar Anggota
+            </button>
+          </Link>
+          <Link to="/login">
+            <button className="bg-[#f0f2f4] text-[#111418] text-sm font-bold px-4 h-10 rounded-lg hover:bg-[#e2e4e6] transition-all">
+              Masuk
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   </header>
-);
+  );
+};
 
 export const ProgressBar: React.FC<{ currentStep: number; totalSteps: number }> = ({ currentStep, totalSteps }) => {
   const progress = (currentStep / totalSteps) * 100;
