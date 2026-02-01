@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import ProgressBar from '../components/ProgressBar';
+import FormSection from '../components/FormSection';
+import MapSection from '../components/MapSection';
 import { StepPengajuan, FormData } from '../types';
 import { 
   Header, 
@@ -27,6 +29,7 @@ const Pengajuan: React.FC = () => {
   const hasUnsavedData = () => {
     return formData.role !== '' || formData.ownerName !== '' || formData.relationship !== '';
   };
+
 
   const handleBackToDashboard = () => {
     if (hasUnsavedData()) {
@@ -161,15 +164,44 @@ const Pengajuan: React.FC = () => {
                 </>
               )}
 
-              {/* Steps 2-4: Placeholder Content */}
-              {currentStep !== StepPengajuan.DASAR && (
-                <div className="flex flex-col items-center justify-center py-20 text-center gap-4 animate-in fade-in">
-                  <div className="p-6 bg-slate-100 dark:bg-slate-800 rounded-full">
-                    <span className="material-symbols-outlined text-6xl text-slate-400">construction</span>
+              {/* Steps 2: Lahan Content */}
+              {currentStep === StepPengajuan.LAHAN && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="lg:col-span-7 flex flex-col gap-6">
+                    <FormSection 
+                      formData={formData} 
+                      onChange={handleChange} 
+                    />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold">Modul Sedang Dikembangkan</h3>
-                    <p className="text-slate-500 max-w-sm">Tahap {currentStep} sedang dalam proses integrasi data BPN.</p>
+                  
+                  <div className="lg:col-span-5">
+                    <MapSection 
+                      koordinat={formData.koordinat || ''} 
+                      onChange={(koordinat) => {
+                        setFormData(prev => ({ ...prev, koordinat }));
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {/* Steps 3: Lahan Content */}
+              {currentStep === StepPengajuan.DOKUMEN && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="lg:col-span-7 flex flex-col gap-6">
+                    <FormSection 
+                      formData={formData} 
+                      onChange={handleChange} 
+                    />
+                  </div>
+                  
+                  <div className="lg:col-span-5">
+                    <MapSection 
+                      koordinat={formData.koordinat || ''} 
+                      onChange={(koordinat) => {
+                        setFormData(prev => ({ ...prev, koordinat }));
+                      }}
+                    />
                   </div>
                 </div>
               )}

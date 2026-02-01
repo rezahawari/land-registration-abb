@@ -1,17 +1,17 @@
 
 import React from 'react';
-import { Step } from '../types';
+import { StepPengajuan } from '../types';
 
 interface ProgressBarProps {
-  currentStep: Step;
+  currentStep: StepPengajuan;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
   const steps = [
-    { label: '01 DASAR', id: Step.DASAR },
-    { label: '02 LAHAN', id: Step.LAHAN },
-    { label: '03 DOKUMEN', id: Step.DOKUMEN },
-    { label: '04 REVIEW', id: Step.REVIEW },
+    { label: '01 DASAR', id: StepPengajuan.DASAR },
+    { label: '02 LAHAN', id: StepPengajuan.LAHAN },
+    { label: '03 DOKUMEN', id: StepPengajuan.DOKUMEN },
+    { label: '04 REVIEW', id: StepPengajuan.REVIEW },
   ];
 
   return (

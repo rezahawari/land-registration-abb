@@ -1,6 +1,69 @@
 import type { FormData } from '../types';
 
 const API_BASE_URL = process.env.VITE_API_BASE_URL || 'https://api-abb.exium.my.id/api';
+const WILAYAH_API_BASE = 'https://alamat.thecloudalert.com/api/';
+
+// ===== WILAYAH API =====
+interface WilayahItem {
+  id: string;
+  text: string;
+}
+
+interface WilayahResponse {
+  status: number;
+  message: string;
+  result: WilayahItem[];
+}
+
+export const getProvinsi = async (): Promise<WilayahItem[]> => {
+  try {
+    const response = await fetch(`${WILAYAH_API_BASE}provinsi/get/`);
+    if (!response.ok) throw new Error('Failed to fetch provinces');
+    const data: WilayahResponse = await response.json();
+    return data.result || [];
+  } catch (error) {
+    console.error('Error fetching provinces:', error);
+    return [];
+  }
+};
+
+export const getKotaByProvinsi = async (provinsiId: string): Promise<WilayahItem[]> => {
+  try {
+    const response = await fetch(`${WILAYAH_API_BASE}kabkota/get/?d_provinsi_id=${provinsiId}`);
+    if (!response.ok) throw new Error('Failed to fetch cities');
+    const data: WilayahResponse = await response.json();
+    return data.result || [];
+  } catch (error) {
+    console.error('Error fetching cities:', error);
+    return [];
+  }
+};
+
+export const getKecamatanByKota = async (kotaId: string): Promise<WilayahItem[]> => {
+  try {
+    const response = await fetch(`${WILAYAH_API_BASE}kecamatan/get/?d_kabkota_id=${kotaId}`);
+    if (!response.ok) throw new Error('Failed to fetch districts');
+    const data: WilayahResponse = await response.json();
+    return data.result || [];
+  } catch (error) {
+    console.error('Error fetching districts:', error);
+    return [];
+  }
+};
+
+export const getKelurahanByKecamatan = async (kecamatanId: string): Promise<WilayahItem[]> => {
+  try {
+    const response = await fetch(`${WILAYAH_API_BASE}kelurahan/get/?d_kecamatan_id=${kecamatanId}`);
+    if (!response.ok) throw new Error('Failed to fetch villages');
+    const data: WilayahResponse = await response.json();
+    return data.result || [];
+  } catch (error) {
+    console.error('Error fetching villages:', error);
+    return [];
+  }
+};
+
+// ===== REGISTRATION API =====
 
 export interface RegistrationResponse {
   success: boolean;
