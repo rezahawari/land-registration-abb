@@ -152,3 +152,47 @@ export const submitRegistrationJSON = async (formData: Omit<FormData, 'ktpPhoto'
     throw new Error('Terjadi kesalahan saat mengirim data');
   }
 };
+
+// ===== PENGAJUAN API =====
+export interface PengajuanResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
+
+export const submitPengajuan = async (formData: FormData): Promise<PengajuanResponse> => {
+  try {
+    const data = new FormData();
+
+    // Append text fields
+    Object.keys(formData).forEach((key) => {
+      const val: any = (formData as any)[key];
+      if (val === undefined || val === null) return;
+      // Files should be appended as-is
+      if (val instanceof File) {
+        data.append(key, val);
+      } else if (typeof val === 'object') {
+        try {
+          data.append(key, JSON.stringify(val));
+        } catch (_) {}
+      } else {
+        data.append(key, String(val));
+      }
+    });
+
+    const response = await fetch(`${API_BASE_URL}/pengajuan`, {
+      method: 'POST',
+      body: data,
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    const json = await response.json();
+    if (!response.ok) throw new Error(json.message || 'Gagal submit pengajuan');
+    return { success: true, message: json.message || 'Berhasil', data: json.data };
+  } catch (err) {
+    console.error('submitPengajuan error', err);
+    throw err;
+  }
+};
