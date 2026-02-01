@@ -186,7 +186,7 @@ const Pengajuan: React.FC = () => {
               )}
               
               {/* Steps 3: Lahan Content */}
-              {currentStep === StepPengajuan.DOKUMEN && (
+              {currentStep === StepPengajuan.DOKUMENHAK && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   <div className="lg:col-span-7 flex flex-col gap-6">
                     <FormSection 

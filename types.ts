@@ -22,6 +22,8 @@ export enum Step {
 export enum StepPengajuan {
   DASAR = 1,
   LAHAN = 2,
-  DOKUMEN = 3,
-  REVIEW = 4,
+  DOKUMENHAK = 3,
+  DOKUMENPENDUKUNG = 4,
+  LEGALITAS = 5,
+  REVIEW = 6
 }
