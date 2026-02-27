@@ -162,37 +162,91 @@ export interface PengajuanResponse {
 
 export const submitPengajuan = async (formData: FormData): Promise<PengajuanResponse> => {
   try {
+    // Validasi data wajib
+    if (!formData.role || !formData.ownerName) {
+      throw new Error('Data wajib (role, ownerName) tidak lengkap');
+    }
+
+    // Buat FormData untuk upload file dan text
     const data = new FormData();
 
-    // Append text fields
-    Object.keys(formData).forEach((key) => {
-      const val: any = (formData as any)[key];
-      if (val === undefined || val === null) return;
-      // Files should be appended as-is
-      if (val instanceof File) {
-        data.append(key, val);
-      } else if (typeof val === 'object') {
-        try {
-          data.append(key, JSON.stringify(val));
-        } catch (_) {}
-      } else {
-        data.append(key, String(val));
-      }
-    });
+    // Step 1: DASAR
+    data.append('role', formData.role || '');
+    data.append('ownerName', formData.ownerName || '');
+    if (formData.relationship) {
+      data.append('relationship', formData.relationship);
+    }
+
+    // Step 2: LAHAN
+    if (formData.provinsi) data.append('provinsi', formData.provinsi);
+    if (formData.kota) data.append('kota', formData.kota);
+    if (formData.kecamatan) data.append('kecamatan', formData.kecamatan);
+    if (formData.desa) data.append('desa', formData.desa);
+    if (formData.alamat) data.append('alamat', formData.alamat);
+    if (formData.luas) data.append('luas', formData.luas);
+    if (formData.kondisi) data.append('kondisi', formData.kondisi);
+    if (formData.koordinat) data.append('koordinat', formData.koordinat);
+
+    // Step 3: DOKUMEN HAK
+    if (formData.jenisDocHak) data.append('jenisDocHak', formData.jenisDocHak);
+    if (formData.nomorDoc) data.append('nomorDoc', formData.nomorDoc);
+    if (formData.tahunTerbit) data.append('tahunTerbit', formData.tahunTerbit);
+    if (formData.riwayatPenguasaan) data.append('riwayatPenguasaan', formData.riwayatPenguasaan);
+
+    // Step 4: DOKUMEN PENDUKUNG (Files)
+    if (formData.ktp instanceof File) {
+      data.append('ktp', formData.ktp);
+    }
+    if (formData.kk instanceof File) {
+      data.append('kk', formData.kk);
+    }
+    if (formData.landDocument instanceof File) {
+      data.append('landDocument', formData.landDocument);
+    }
+    if (formData.locationPhoto instanceof File) {
+      data.append('locationPhoto', formData.locationPhoto);
+    }
+    if (formData.notes) data.append('notes', formData.notes);
+    if (formData.disclaimerAccepted) data.append('disclaimerAccepted', 'true');
+
+    // Step 5: LEGALITAS
+    if (formData.uploadedLegalFile instanceof File) {
+      data.append('uploadedLegalFile', formData.uploadedLegalFile);
+    }
+
+    // Get token from localStorage if available
+    const token = localStorage.getItem('authToken');
+    
+    const headers: HeadersInit = {
+      'Accept': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const response = await fetch(`${API_BASE_URL}/pengajuan`, {
       method: 'POST',
       body: data,
-      headers: {
-        'Accept': 'application/json',
-      },
+      headers,
     });
 
     const json = await response.json();
-    if (!response.ok) throw new Error(json.message || 'Gagal submit pengajuan');
-    return { success: true, message: json.message || 'Berhasil', data: json.data };
+    
+    if (!response.ok) {
+      throw new Error(json.message || `Gagal submit pengajuan (Status: ${response.status})`);
+    }
+    
+    return { 
+      success: true, 
+      message: json.message || 'Pengajuan berhasil dikirim', 
+      data: json.data 
+    };
   } catch (err) {
     console.error('submitPengajuan error', err);
-    throw err;
+    if (err instanceof Error) {
+      throw new Error(`Error: ${err.message}`);
+    }
+    throw new Error('Terjadi kesalahan saat mengirim pengajuan');
   }
 };

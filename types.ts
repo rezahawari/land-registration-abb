@@ -29,6 +29,9 @@ export interface FormData {
   notes?: string;
   disclaimerAccepted?: boolean;
   
+  // Step 5: LEGALITAS
+  uploadedLegalFile?: File | null;
+  
   // Registration fields (for compatibility)
   nik?: string;
   name?: string;

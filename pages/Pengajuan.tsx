@@ -34,11 +34,19 @@ const Pengajuan: React.FC = () => {
     role: '',
     ownerName: '',
     relationship: '',
+    uploadedLegalFile: null,
   });
 
   // Check if form has unsaved data
   const hasUnsavedData = () => {
-    return formData.role !== '' || formData.ownerName !== '' || formData.relationship !== '';
+    return formData.role !== '' || 
+           formData.ownerName !== '' || 
+           formData.relationship !== '' ||
+           formData.provinsi !== undefined ||
+           formData.alamat !== undefined ||
+           formData.jenisDocHak !== undefined ||
+           formData.ktp !== undefined ||
+           formData.uploadedLegalFile !== undefined;
   };
 
 
@@ -88,6 +96,10 @@ const Pengajuan: React.FC = () => {
   const handleNotesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     setFormData(prev => ({ ...prev, notes: value }));
+  };
+
+  const handleFormCardChange = (data: any) => {
+    setFormData(prev => ({ ...prev, ...data }));
   };
 
   const handleToggleDisclaimer = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -324,7 +336,9 @@ const Pengajuan: React.FC = () => {
                 <FormCard 
                   step={currentStep} 
                   onNext={handleNext} 
-                  onBack={handleBack} 
+                  onBack={handleBack}
+                  formData={formData}
+                  onFormDataChange={handleFormCardChange}
                 />
               )}
 

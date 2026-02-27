@@ -1,14 +1,36 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface FormCardProps {
   step: number;
   onNext: () => void;
   onBack: () => void;
+  formData?: any;
+  onFormDataChange?: (data: any) => void;
 }
 
-const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack }) => {
-  const [selectedHistory, setSelectedHistory] = useState<string>('jual-beli');
+const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack, formData, onFormDataChange }) => {
+  const [localFormData, setLocalFormData] = useState({
+    jenisDocHak: formData?.jenisDocHak || '',
+    nomorDoc: formData?.nomorDoc || '',
+    tahunTerbit: formData?.tahunTerbit || '',
+    riwayatPenguasaan: formData?.riwayatPenguasaan || 'jual-beli',
+  });
+
+  useEffect(() => {
+    if (onFormDataChange) {
+      onFormDataChange(localFormData);
+    }
+  }, [localFormData, onFormDataChange]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setLocalFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleHistoryChange = (value: string) => {
+    setLocalFormData(prev => ({ ...prev, riwayatPenguasaan: value }));
+  };
 
   // Step 3 specific content
   if (step === 3) {
@@ -24,7 +46,11 @@ const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack }) => {
             <div className="flex flex-col gap-2">
               <label className="text-[#111418] dark:text-white text-sm font-bold">Jenis Dokumen Alas Hak</label>
               <div className="relative">
-                <select className="w-full h-12 px-4 rounded-lg bg-white dark:bg-[#101922] border border-[#dbe0e6] dark:border-[#343d48] focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all text-base">
+                <select 
+                  name="jenisDocHak"
+                  value={localFormData.jenisDocHak}
+                  onChange={handleInputChange}
+                  className="w-full h-12 px-4 rounded-lg bg-white dark:bg-[#101922] border border-[#dbe0e6] dark:border-[#343d48] focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all text-base">
                   <option value="">Pilih Jenis Dokumen (Eigendom, Girik, AJB, dll)</option>
                   <option value="eigendom">Eigendom Verponding</option>
                   <option value="girik">Girik / Letter C / Petok D</option>
@@ -42,7 +68,10 @@ const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack }) => {
               <div className="flex flex-col gap-2">
                 <label className="text-[#111418] dark:text-white text-sm font-bold">Nomor Dokumen</label>
                 <input 
-                  type="text" 
+                  type="text"
+                  name="nomorDoc"
+                  value={localFormData.nomorDoc}
+                  onChange={handleInputChange}
                   placeholder="Contoh: 1234/Desa/2023"
                   className="w-full h-12 px-4 rounded-lg bg-white dark:bg-[#101922] border border-[#dbe0e6] dark:border-[#343d48] focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
                 />
@@ -50,7 +79,10 @@ const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack }) => {
               <div className="flex flex-col gap-2">
                 <label className="text-[#111418] dark:text-white text-sm font-bold">Tahun Terbit</label>
                 <input 
-                  type="number" 
+                  type="number"
+                  name="tahunTerbit"
+                  value={localFormData.tahunTerbit}
+                  onChange={handleInputChange}
                   placeholder="YYYY"
                   className="w-full h-12 px-4 rounded-lg bg-white dark:bg-[#101922] border border-[#dbe0e6] dark:border-[#343d48] focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
                 />
@@ -71,9 +103,9 @@ const FormCard: React.FC<FormCardProps> = ({ step, onNext, onBack }) => {
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setSelectedHistory(item.id)}
+                    onClick={() => handleHistoryChange(item.id)}
                     className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                      selectedHistory === item.id 
+                      localFormData.riwayatPenguasaan === item.id 
                         ? 'border-primary bg-primary/5 text-primary' 
                         : 'border-[#dbe0e6] dark:border-[#343d48] text-[#617589] hover:border-primary/50'
                     }`}
