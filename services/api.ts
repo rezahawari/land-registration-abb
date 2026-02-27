@@ -160,6 +160,42 @@ export interface PengajuanResponse {
   data?: any;
 }
 
+// list items returned by GET /pengajuan
+export interface PengajuanItem {
+  id: string;
+  status: string;
+  createdAt: string;
+  reference_number?: string;
+  role?: string;
+  ownerName?: string;
+}
+
+export const getPengajuanList = async (): Promise<PengajuanItem[]> => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const headers: HeadersInit = { Accept: 'application/json' };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/pengajuan`, {
+      method: 'GET',
+      headers,
+    });
+
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error(json.message || 'Gagal mengambil daftar pengajuan');
+    }
+
+    // assume backend returns { success: true, data: [...] }
+    return json.data || [];
+  } catch (err) {
+    console.error('getPengajuanList error', err);
+    throw err;
+  }
+};
+
 export const submitPengajuan = async (formData: FormData): Promise<PengajuanResponse> => {
   try {
     // Validasi data wajib

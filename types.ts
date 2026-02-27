@@ -60,3 +60,13 @@ export enum StepPengajuan {
   LEGALITAS = 5,
   REVIEW = 6
 }
+
+// used in "Pengajuan Saya" page
+export interface PengajuanItem {
+  id: string;
+  status: string;
+  createdAt: string;
+  referenceNumber?: string;
+  role?: string;
+  ownerName?: string;
+}

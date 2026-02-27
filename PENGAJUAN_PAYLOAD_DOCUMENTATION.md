@@ -4,12 +4,33 @@
 Dokumen ini menjelaskan struktur payload yang dikirim dari frontend ke backend ketika user menyelesaikan form pengajuan sertifikat tanah.
 
 ## Endpoint
+
+### Buat Pengajuan
 - **Method:** `POST`
 - **URL:** `{API_BASE_URL}/pengajuan`
 - **Content-Type:** `multipart/form-data`
 - **Header:** 
   - `Accept: application/json`
   - `Authorization: Bearer {token}` (optional, jika tersedia)
+
+### List Pengajuan (untuk halaman "Pengajuan Saya")
+- **Method:** `GET`
+- **URL:** `{API_BASE_URL}/pengajuan`
+- **Header:**
+  - `Accept: application/json`
+  - `Authorization: Bearer {token}` (wajib)
+
+Pada respons, `data` berisi array objek pengajuan seperti:
+```json
+{
+  "id": "pengajuan_123",
+  "status": "pending",
+  "createdAt": "2024-02-27T10:30:00Z",
+  "reference_number": "ABB-2024-001234",
+  "role": "waris",
+  "ownerName": "Budi Santoso"
+}
+```
 
 ## Request Format
 

@@ -13,8 +13,8 @@ import {
 
 const Dashboard: React.FC = () => {
   const services = [
-    { title: 'Ajukan Baru', icon: 'add_card', color: 'text-blue-500', bg: 'bg-blue-50' },
-    { title: 'Aset Saya', icon: 'assignment', color: 'text-blue-600', bg: 'bg-blue-50' },
+    { title: 'Ajukan Baru', icon: 'add_card', color: 'text-blue-500', bg: 'bg-blue-50', path: '/pengajuan' },
+    { title: 'Pengajuan Saya', icon: 'assignment', color: 'text-blue-600', bg: 'bg-blue-50', path: '/pengajuan-saya' },
     { title: 'Konsultasi', icon: 'forum', color: 'text-blue-500', bg: 'bg-blue-50' },
     { title: 'E-Brankas', icon: 'lock', color: 'text-blue-700', bg: 'bg-blue-50' },
     { title: 'Kamus Tanah', icon: 'menu_book', color: 'text-blue-500', bg: 'bg-blue-50' },
@@ -105,10 +105,9 @@ const Dashboard: React.FC = () => {
                 </div>
               );
 
-              // Make 'Ajukan Baru' navigate to /pengajuan
-              if (item.title === 'Ajukan Baru') {
+              if (item.path) {
                 return (
-                  <Link to="/pengajuan" key={idx} className="block">
+                  <Link to={item.path} key={idx} className="block">
                     {card}
                   </Link>
                 );
