@@ -225,7 +225,7 @@ export const submitPengajuan = async (formData: FormData): Promise<PengajuanResp
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}/pengajuan`, {
+    const response = await fetch(`${API_BASE_URL}/pengajuan/store`, {
       method: 'POST',
       body: data,
       headers,
